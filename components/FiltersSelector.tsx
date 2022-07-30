@@ -17,15 +17,15 @@ const mockData: Data[] = [
   },
   {
     name: "👥 teams",
-    options: [{ _id: "1234", title: "project 1" }],
+    options: [{ _id: "1234", title: "team 1" }],
   },
   {
     name: "👤 members",
-    options: [{ _id: "1234", title: "project 1" }],
+    options: [{ _id: "1234", title: "member 1" }],
   },
   {
     name: "📌 titles",
-    options: [{ _id: "1234", title: "project 1" }],
+    options: [{ _id: "1234", title: "title 1" }],
   },
 ];
 function FiltersSelector() {

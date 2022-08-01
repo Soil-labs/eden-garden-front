@@ -28,6 +28,7 @@ function FilterSelector({
   active,
 }: Props) {
   const { filters, setFilters } = useContext(FiltersContext);
+  const _name = name as keyof ContextType["filters"];
 
   const hasProjectSelected = (id: string): boolean => {
     return filters[name as keyof ContextType["filters"]].some(
@@ -39,21 +40,19 @@ function FilterSelector({
     let newFiltersArray;
 
     if (hasProjectSelected(e.target.value)) {
-      newFiltersArray = filters[name as keyof ContextType["filters"]].filter(
-        (item) => {
-          return item._id !== e.target.value;
-        }
-      );
+      newFiltersArray = filters[_name].filter((item) => {
+        return item._id !== e.target.value;
+      });
     } else {
       newFiltersArray = [
-        ...filters[name as keyof ContextType["filters"]],
+        ...filters[_name],
         options.find((option) => option._id === e.target.value),
       ];
     }
 
     setFilters({
       ...filters,
-      [name as keyof ContextType["filters"]]: newFiltersArray,
+      [_name]: newFiltersArray,
     });
   };
   return (
@@ -83,7 +82,7 @@ function FilterSelector({
                   name={`option-${option._id}`}
                   type="checkbox"
                   checked={hasProjectSelected(option._id)}
-                  className="absolute left-0 top-0 w-full h-full peer checked:bg-slate-800 appearance-none focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded cursor-pointer"
+                  className="absolute left-0 top-0 w-full h-full peer checked:bg-slate-800 appearance-none focus:ring-indigo-500 text-indigo-600 border-gray-300 rounded cursor-pointer"
                   onChange={handleSelectFilters}
                 />
                 <div className="z-10 min-w-0 text-sm peer-checked:text-white">

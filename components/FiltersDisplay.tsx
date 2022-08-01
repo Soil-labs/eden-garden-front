@@ -1,17 +1,13 @@
 import { Fragment, useContext } from "react";
 import { FiltersContext } from "../pages";
-import { Member } from "../types/Member";
-import { Project } from "../types/Project";
-import { Team } from "../types/Team";
-import { Title } from "../types/Title";
-import FilterSelector from "./FilterSelector";
+import FilterDisplay from "./FilterDisplay";
 
 function FiltersDisplay() {
-  const { filters, setFilters } = useContext(FiltersContext);
   return (
     <div className="">
-      {JSON.stringify(filters)}
-      {/* <div className="inline"></div> */}
+      <FilterDisplay name="projects" color="#FF7E5C" />
+      <FilterDisplay name="teams" color="#9B67FF" />
+      {/* <FilterSelector data={filters.members} /> */}
     </div>
   );
 }

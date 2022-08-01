@@ -17,7 +17,7 @@ import { Team } from "../types/Team";
 import { Member } from "../types/Member";
 import { Title } from "../types/Title";
 
-interface ContextType {
+export interface ContextType {
   filters: {
     projects: Project[];
     teams: Team[];

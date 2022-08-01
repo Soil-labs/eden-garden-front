@@ -2,53 +2,102 @@ import { Member } from "../types/Member";
 import { Project } from "../types/Project";
 import { Team } from "../types/Team";
 import { Title } from "../types/Title";
-import { ChevronRightIcon } from "@heroicons/react/outline";
+import {
+  ChevronRightIcon,
+  CheckCircleIcon,
+  RefreshIcon,
+} from "@heroicons/react/outline";
 import { useContext, useState } from "react";
-import { FiltersContext } from "../pages";
+import { FiltersContext, ContextType } from "../pages";
+import { handleClientScriptLoad } from "next/script";
 
 interface Props {
-  name?: string;
+  name: string;
+  title?: string;
   options: Project[] | Team[] | Member[] | Title[];
+  setActiveTabCallback: Function;
+  index: Number;
+  active: boolean;
 }
-function FilterSelector({ name, options }: Props) {
+function FilterSelector({
+  name,
+  title,
+  options,
+  setActiveTabCallback,
+  index,
+  active,
+}: Props) {
   const { filters, setFilters } = useContext(FiltersContext);
-  const [active, setActive] = useState(true);
 
-  console.log("---->", options);
+  const hasProjectSelected = (id: string): boolean => {
+    return filters[name as keyof ContextType["filters"]].some(
+      (filter) => filter._id === id
+    );
+  };
 
-  const handleSelectFilters = () => {
+  const handleSelectFilters = (e: any) => {
+    let newFiltersArray;
+
+    if (hasProjectSelected(e.target.value)) {
+      newFiltersArray = filters[name as keyof ContextType["filters"]].filter(
+        (item) => {
+          return item._id !== e.target.value;
+        }
+      );
+    } else {
+      newFiltersArray = [
+        ...filters[name as keyof ContextType["filters"]],
+        options.find((option) => option._id === e.target.value),
+      ];
+    }
+
     setFilters({
       ...filters,
-      projects: [...filters.projects, options[0]],
+      [name as keyof ContextType["filters"]]: newFiltersArray,
     });
   };
   return (
-    <div className="h-12 px-4 flex justify-center items-center border-r last:border-none bg-white hover:bg-slate-200 first:rounded-l-full last:rounded-r-full drop-shadow-md cursor-pointer">
-      <span onClick={handleSelectFilters}>{name}</span>
-      <ChevronRightIcon width={14} />
+    <div className="h-12 border-r last:border-none bg-white hover:bg-slate-200 first:rounded-l-full last:rounded-r-full drop-shadow-md cursor-pointer">
+      <div
+        onClick={() => setActiveTabCallback(index)}
+        className="flex justify-center items-center w-full h-full pl-4 pr-2"
+      >
+        <span className="mr-1">{title}</span>
+        <ChevronRightIcon
+          width={14}
+          className={`${active ? "rotate-90" : ""}`}
+        />
+      </div>
       {active && (
-        <fieldset className="absolute top-14 w-28 p-1 bg-white rounded-md">
+        <fieldset className="absolute top-14 -right-2 w-32 p-1 bg-white rounded-md">
           {options.map((option, optionIdx) => (
-            <div
+            <label
+              htmlFor={`option-${option._id}`}
               key={optionIdx}
-              className="relative flex items-start p-1 hover:bg-slate-800 text-gray-700 hover:text-white rounded-md"
+              className="relative flex p-1 hover:bg-slate-800 text-gray-700 rounded-md cursor-pointer mb-px"
             >
-              <div className="min-w-0 flex-1 text-sm">
-                <label
-                  htmlFor={`option-${option._id}`}
-                  className="font-medium select-none"
-                >
-                  {option.title}
-                </label>
-              </div>
-              <div className="ml-3 flex items-center h-5">
+              <div className="w-full flex justify-between items-center h-full hover:text-white">
                 <input
+                  value={option._id}
+                  id={`option-${option._id}`}
                   name={`option-${option._id}`}
                   type="checkbox"
-                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                  checked={hasProjectSelected(option._id)}
+                  className="absolute left-0 top-0 w-full h-full peer checked:bg-slate-800 appearance-none focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded cursor-pointer"
+                  onChange={handleSelectFilters}
                 />
+                <div className="z-10 min-w-0 text-sm peer-checked:text-white">
+                  <span className="font-medium cursor-pointer">
+                    {option.title}
+                  </span>
+                </div>
+                <div
+                  className={`z-10 ml-auto rounded-full invisible peer-checked:visible bg-green-400`}
+                >
+                  <CheckCircleIcon width={20} color="#fff" />
+                </div>
               </div>
-            </div>
+            </label>
           ))}
         </fieldset>
       )}

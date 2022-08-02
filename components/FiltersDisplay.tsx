@@ -1,13 +1,21 @@
 import { Fragment, useContext } from "react";
 import { FiltersContext } from "../pages";
 import FilterDisplay from "./FilterDisplay";
+import FilterDisplayMember from "./FilterDisplayMember";
 
 function FiltersDisplay() {
   return (
     <div className="">
-      <FilterDisplay name="projects" color="#FF7E5C" />
-      <FilterDisplay name="teams" color="#9B67FF" />
-      {/* <FilterSelector data={filters.members} /> */}
+      <span className="font-bold text-[#74FA6D]">{8}</span> {`records `}
+      <FilterDisplay name="projects" color="#FF7E5C">
+        <span>{`for `}</span>
+      </FilterDisplay>
+      <FilterDisplay name="teams" color="#9B67FF">
+        <span>{`in `}</span>
+      </FilterDisplay>
+      <FilterDisplayMember name="members" color="#78EECB" useAvatars={true}>
+        <span>{`with `}</span>
+      </FilterDisplayMember>
     </div>
   );
 }

@@ -1,17 +1,14 @@
 import { XIcon } from "@heroicons/react/outline";
-import { ChangeEvent, Fragment, useContext } from "react";
+import { ReactElement, useContext } from "react";
 import { FiltersContext, ContextType } from "../pages";
-import { Member } from "../types/Member";
-import { Project } from "../types/Project";
-import { Team } from "../types/Team";
-import { Title } from "../types/Title";
 
 interface Props {
   name: string;
   color: string;
+  children: ReactElement;
 }
 
-function FiltersDisplay({ name, color }: Props) {
+function FilterDisplay({ name, color, children }: Props) {
   const { filters, setFilters } = useContext(FiltersContext);
   const _name = name as keyof ContextType["filters"];
 
@@ -27,6 +24,7 @@ function FiltersDisplay({ name, color }: Props) {
 
   return (
     <div className="inline">
+      {!!filters[_name].length && children}
       {filters[_name].map((item, index) => (
         <span key={index} className="font-bold" style={{ color: color }}>
           {item.title}
@@ -44,4 +42,4 @@ function FiltersDisplay({ name, color }: Props) {
   );
 }
 
-export default FiltersDisplay;
+export default FilterDisplay;

@@ -28,7 +28,11 @@ const mockData: Data[] = [
   {
     title: "👤 members",
     name: "members",
-    options: [{ _id: "2", title: "member 1" }],
+    options: [
+      { _id: "2", title: "member 1" },
+      { _id: "3", title: "member 1" },
+      { _id: "4", title: "member 1" },
+    ],
   },
   {
     title: "📌 titles",

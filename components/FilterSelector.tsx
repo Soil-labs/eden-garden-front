@@ -1,4 +1,4 @@
-import { Member } from "../types/Member";
+import { Members } from "../generated/graphql";
 import { Project } from "../types/Project";
 import { Team } from "../types/Team";
 import { Title } from "../types/Title";
@@ -14,7 +14,7 @@ import { handleClientScriptLoad } from "next/script";
 interface Props {
   name: string;
   title?: string;
-  options: Project[] | Team[] | Member[] | Title[];
+  options: Project[] | Team[] | Members[] | Title[];
   setActiveTabCallback: Function;
   index: Number;
   active: boolean;

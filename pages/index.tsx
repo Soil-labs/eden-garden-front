@@ -13,14 +13,20 @@ import FiltersSelector from "../components/FiltersSelector";
 import FiltersDisplay from "../components/FiltersDisplay";
 import { Project } from "../types/Project";
 import { Team } from "../types/Team";
-import { Member } from "../types/Member";
+import {
+  Members,
+  Unnamed_1_Query,
+  Unnamed_1_QueryVariables,
+} from "../generated/graphql";
+import { useQuery } from "@apollo/client";
+import { FIND_MEMBERS } from "./api/findMembers.gql";
 import { Title } from "../types/Title";
 
 export interface ContextType {
   filters: {
     projects: Project[];
     teams: Team[];
-    members: Member[];
+    members: Members[];
     titles: Title[];
   };
   setFilters: Dispatch<SetStateAction<any>>;
@@ -42,6 +48,12 @@ const Home: NextPageWithLayout = () => {
     members: [],
     titles: [],
   });
+
+  const {
+    loading: isTodosLoading,
+    data: todosConnection,
+    error: todosError,
+  } = useQuery<Unnamed_1_Query, Unnamed_1_QueryVariables>(FIND_MEMBERS, {}); // Use the type here for type safety
 
   return (
     <div className="">

@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useState } from "react";
-import { Member } from "../types/Member";
+import { Members } from "../generated/graphql";
 import { Project } from "../types/Project";
 import { Team } from "../types/Team";
 import { Title } from "../types/Title";
@@ -8,7 +8,7 @@ import FilterSelector from "./FilterSelector";
 type Data = {
   title: string;
   name: string;
-  options: Project[] | Team[] | Member[] | Title[];
+  options: Project[] | Team[] | Members[] | Title[];
 };
 
 const mockData: Data[] = [

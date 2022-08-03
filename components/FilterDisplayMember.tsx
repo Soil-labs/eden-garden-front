@@ -1,7 +1,6 @@
 import { XIcon } from "@heroicons/react/outline";
 import { ReactElement, useContext, useState } from "react";
 import { FiltersContext, ContextType } from "../pages";
-import { Member } from "../types/Member";
 import Avatar from "./Avatar";
 
 interface Props {

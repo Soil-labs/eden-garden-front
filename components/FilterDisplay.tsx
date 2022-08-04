@@ -32,6 +32,7 @@ function FilterDisplay({ name, color, children }: Props) {
       {filters[_name].map((item, index) => (
         <span key={index} className="font-bold" style={{ color: color }}>
           {"title" in item && <span>{item.title}</span>}
+          {"name" in item && <span>{item.name}</span>}
           <div
             key={index}
             className="p-px rounded-full text-white inline-block ml-1 -mb-1 mr-2 cursor-pointer"

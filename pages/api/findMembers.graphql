@@ -1,0 +1,17 @@
+input findMembersInput {
+  _id: ID
+}
+
+query FindMembers($fields: findMembersInput) {
+  findMembers(fields: $fields) {
+    _id
+    discordName
+    discordAvatar
+    skills {
+      level
+      skillInfo {
+        _id
+      }
+    }
+  }
+}

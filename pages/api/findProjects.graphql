@@ -1,0 +1,11 @@
+input findProjectsInput {
+  _id: ID
+}
+
+query FindProjects($fields: findProjectsInput) {
+  findProjects(fields: $fields) {
+    _id
+    title
+    description
+  }
+}

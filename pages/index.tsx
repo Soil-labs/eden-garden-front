@@ -12,18 +12,20 @@ import Layout from "../components/layout/Layout";
 import { AppProps } from "next/app";
 import FiltersSelector from "../components/FiltersSelector";
 import FiltersDisplay from "../components/FiltersDisplay";
-import { Project } from "../generated/graphql";
+import {
+  FindMembersDocument,
+  FindProjectsDocument,
+  Project,
+} from "../generated/graphql";
 import { Team } from "../types/Team";
 import {
   Members,
-  Unnamed_1_Query,
-  Unnamed_1_QueryVariables,
-  Unnamed_2_Query,
-  Unnamed_2_QueryVariables,
+  FindMembersQuery,
+  FindMembersQueryVariables,
+  FindProjectsQuery,
+  FindProjectsQueryVariables,
 } from "../generated/graphql";
 import { useQuery } from "@apollo/client";
-import { FIND_MEMBERS } from "./api/findMembers.gql";
-import { FIND_PROJECTS } from "./api/findProjects.gql";
 import { Title } from "../types/Title";
 
 export interface ContextType {
@@ -72,12 +74,18 @@ const Home: NextPageWithLayout = () => {
     loading: membersLoading,
     data: membersData,
     error: membersError,
-  } = useQuery<Unnamed_1_Query, Unnamed_1_QueryVariables>(FIND_MEMBERS, {}); // Use the type here for type safety
+  } = useQuery<FindMembersQuery, FindMembersQueryVariables>(
+    FindMembersDocument,
+    {}
+  ); // Use the type here for type safety
   const {
     loading: projectsLoading,
     data: projectsData,
     error: projectsError,
-  } = useQuery<Unnamed_2_Query, Unnamed_2_QueryVariables>(FIND_PROJECTS, {}); // Use the type here for type safety
+  } = useQuery<FindProjectsQuery, FindProjectsQueryVariables>(
+    FindProjectsDocument,
+    {}
+  ); // Use the type here for type safety
 
   useEffect(() => {
     if (membersData?.findMembers || projectsData?.findProjects) {

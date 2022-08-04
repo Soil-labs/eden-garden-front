@@ -1,6 +1,6 @@
 overwrite: true
 schema: "https://oasis-bot-test-deploy.herokuapp.com/graphql"
-documents: "**/*.gql.ts"
+documents: "**/*.graphql"
 generates:
   generated/graphql.tsx:
     plugins:

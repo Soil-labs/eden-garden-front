@@ -837,6 +837,7 @@ export type Unnamed_1_Query = {
     __typename?: "Members";
     _id?: string | null;
     discordName?: string | null;
+    discordAvatar?: string | null;
     skills?: Array<{
       __typename?: "skillType_member";
       level?: LevelEnum | null;
@@ -845,17 +846,122 @@ export type Unnamed_1_Query = {
   } | null> | null;
 };
 
+export type Unnamed_2_QueryVariables = Exact<{ [key: string]: never }>;
+
+export type Unnamed_2_Query = {
+  __typename?: "Query";
+  findProjects?: Array<{
+    __typename?: "Project";
+    _id?: string | null;
+    title?: string | null;
+    description?: string | null;
+  } | null> | null;
+};
+
+export type Unnamed_3_QueryVariables = Exact<{ [key: string]: never }>;
+
+export type Unnamed_3_Query = {
+  __typename?: "Query";
+  findTeams?: Array<{
+    __typename?: "Team";
+    _id?: string | null;
+    name?: string | null;
+    description?: string | null;
+  } | null> | null;
+};
+
 export const Document = gql`
   {
     findMembers(fields: {}) {
       _id
       discordName
+      discordAvatar
       skills {
         level
         skillInfo {
           _id
         }
       }
+    }
+  }
+`;
+
+/**
+ * __useQuery__
+ *
+ * To run a query within a React component, call `useQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQuery(
+  baseOptions?: Apollo.QueryHookOptions<Query, QueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<Query, QueryVariables>(Document, options);
+}
+export function useLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<Query, QueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<Query, QueryVariables>(Document, options);
+}
+export type QueryHookResult = ReturnType<typeof useQuery>;
+export type LazyQueryHookResult = ReturnType<typeof useLazyQuery>;
+export type QueryResult = Apollo.QueryResult<Query, QueryVariables>;
+export const Document = gql`
+  {
+    findProjects(fields: {}) {
+      _id
+      title
+      description
+    }
+  }
+`;
+
+/**
+ * __useQuery__
+ *
+ * To run a query within a React component, call `useQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQuery(
+  baseOptions?: Apollo.QueryHookOptions<Query, QueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<Query, QueryVariables>(Document, options);
+}
+export function useLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<Query, QueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<Query, QueryVariables>(Document, options);
+}
+export type QueryHookResult = ReturnType<typeof useQuery>;
+export type LazyQueryHookResult = ReturnType<typeof useLazyQuery>;
+export type QueryResult = Apollo.QueryResult<Query, QueryVariables>;
+export const Document = gql`
+  {
+    findTeams(fields: {}) {
+      _id
+      name
+      description
     }
   }
 `;

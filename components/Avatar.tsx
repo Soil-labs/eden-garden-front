@@ -1,6 +1,6 @@
 interface Props {
   src: string;
-  border: string;
+  border?: string;
 }
 
 function Avatar({ src, border }: Props) {

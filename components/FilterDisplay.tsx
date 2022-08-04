@@ -1,6 +1,8 @@
 import { XIcon } from "@heroicons/react/outline";
 import { ReactElement, useContext } from "react";
+import { Members, Project, Team } from "../generated/graphql";
 import { FiltersContext, ContextType } from "../pages";
+import { Title } from "../types/Title";
 
 interface Props {
   name: string;
@@ -13,7 +15,9 @@ function FilterDisplay({ name, color, children }: Props) {
   const _name = name as keyof ContextType["filters"];
 
   const handleDeleteFilter = (_id: string) => {
-    const newFiltersArray = filters[_name].filter((item) => {
+    const arrayToFilter: Array<Project | Team | Members | Title> =
+      filters[_name];
+    const newFiltersArray = arrayToFilter.filter((item) => {
       return item._id !== _id;
     });
     setFilters({
@@ -27,12 +31,12 @@ function FilterDisplay({ name, color, children }: Props) {
       {!!filters[_name].length && children}
       {filters[_name].map((item, index) => (
         <span key={index} className="font-bold" style={{ color: color }}>
-          {item.title}
+          {"title" in item && <span>{item.title}</span>}
           <div
             key={index}
             className="p-px rounded-full text-white inline-block ml-1 -mb-1 mr-2 cursor-pointer"
             style={{ backgroundColor: color }}
-            onClick={() => handleDeleteFilter(item._id)}
+            onClick={() => handleDeleteFilter(item._id || "")}
           >
             <XIcon width={16} />
           </div>

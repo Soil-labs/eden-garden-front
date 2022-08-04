@@ -1,6 +1,7 @@
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useContext, useState } from "react";
 import { Members } from "../generated/graphql";
-import { Project } from "../types/Project";
+import { FiltersContext } from "../pages";
+import { Project } from "../generated/graphql";
 import { Team } from "../types/Team";
 import { Title } from "../types/Title";
 import FilterSelector from "./FilterSelector";
@@ -11,37 +12,22 @@ type Data = {
   options: Project[] | Team[] | Members[] | Title[];
 };
 
-const mockData: Data[] = [
-  {
-    title: "📁 projects",
-    name: "projects",
-    options: [
-      { _id: "1234", title: "project 1" },
-      { _id: "12345", title: "project 2" },
-    ],
-  },
-  {
-    title: "👥 teams",
-    name: "teams",
-    options: [{ _id: "1", title: "team 1" }],
-  },
-  {
-    title: "👤 members",
-    name: "members",
-    options: [
-      { _id: "2", title: "member 1" },
-      { _id: "3", title: "member 1" },
-      { _id: "4", title: "member 1" },
-    ],
-  },
-  {
-    title: "📌 titles",
-    name: "titles",
-    options: [{ _id: "3", title: "title 1" }],
-  },
-];
-
 function FiltersSelector() {
+  const { filtersData } = useContext(FiltersContext);
+  const _filtersData: Data[] = [
+    {
+      title: "📁 projects",
+      name: "projects",
+      options: filtersData?.projects || [],
+    },
+    { title: "👥 teams", name: "teams", options: filtersData?.teams || [] },
+    {
+      title: "👤 members",
+      name: "members",
+      options: filtersData?.members || [],
+    },
+    { title: "📌 titles", name: "titles", options: filtersData?.titles || [] },
+  ];
   const [activeTab, setActiveTab] = useState<Number | null>(null);
   const setActiveTabCallback = useCallback(
     (tab: Number | null) => {
@@ -52,7 +38,7 @@ function FiltersSelector() {
   return (
     <div className="ml-auto">
       <div className="flex">
-        {mockData.map((item, index) => (
+        {_filtersData.map((item, index) => (
           <FilterSelector
             key={index}
             name={item.name}

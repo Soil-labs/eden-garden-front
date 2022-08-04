@@ -1,5 +1,5 @@
 import { Members } from "../generated/graphql";
-import { Project } from "../types/Project";
+import { Project } from "../generated/graphql";
 import { Team } from "../types/Team";
 import { Title } from "../types/Title";
 import {
@@ -10,6 +10,7 @@ import {
 import { useContext, useState } from "react";
 import { FiltersContext, ContextType } from "../pages";
 import { handleClientScriptLoad } from "next/script";
+import Avatar from "./Avatar";
 
 interface Props {
   name: string;
@@ -40,13 +41,21 @@ function FilterSelector({
     let newFiltersArray;
 
     if (hasProjectSelected(e.target.value)) {
-      newFiltersArray = filters[_name].filter((item) => {
-        return item._id !== e.target.value;
-      });
+      const arrayToFilter: Array<Project | Team | Members | Title> =
+        filters[_name];
+      newFiltersArray = arrayToFilter.filter(
+        (item: Project | Team | Members | Title) => {
+          return item._id !== e.target.value;
+        }
+      );
     } else {
+      const arrayToFilter: Array<Project | Team | Members | Title> = options;
       newFiltersArray = [
         ...filters[_name],
-        options.find((option) => option._id === e.target.value),
+        arrayToFilter.find(
+          (option: Project | Team | Members | Title) =>
+            option._id === e.target.value
+        ),
       ];
     }
 
@@ -68,7 +77,7 @@ function FilterSelector({
         />
       </div>
       {active && (
-        <fieldset className="absolute top-14 -right-2 w-32 p-1 bg-white rounded-md">
+        <fieldset className="absolute top-14 -right-2 p-1 bg-white rounded-md">
           {options.map((option, optionIdx) => (
             <label
               htmlFor={`option-${option._id}`}
@@ -76,18 +85,28 @@ function FilterSelector({
               className="relative flex p-1 hover:bg-slate-800 text-gray-700 rounded-md cursor-pointer mb-px"
             >
               <div className="w-full flex justify-between items-center h-full hover:text-white">
-                <input
-                  value={option._id}
-                  id={`option-${option._id}`}
-                  name={`option-${option._id}`}
-                  type="checkbox"
-                  checked={hasProjectSelected(option._id)}
-                  className="absolute left-0 top-0 w-full h-full peer checked:bg-slate-800 appearance-none focus:ring-indigo-500 text-indigo-600 border-gray-300 rounded cursor-pointer"
-                  onChange={handleSelectFilters}
-                />
+                {option._id && (
+                  <input
+                    value={option._id}
+                    id={`option-${option._id}`}
+                    name={`option-${option._id}`}
+                    type="checkbox"
+                    checked={hasProjectSelected(option._id)}
+                    className="absolute left-0 top-0 w-full h-full peer checked:bg-slate-800 appearance-none focus:ring-indigo-500 text-indigo-600 border-gray-300 rounded cursor-pointer"
+                    onChange={handleSelectFilters}
+                  />
+                )}
                 <div className="z-10 min-w-0 text-sm peer-checked:text-white">
                   <span className="font-medium cursor-pointer">
-                    {option.title}
+                    {"title" in option && <span>{option.title}</span>}
+                    {"discordName" in option && (
+                      <span>
+                        <span className="mr-1">
+                          <Avatar src={option.discordAvatar || ""} />
+                        </span>
+                        {option.discordName}
+                      </span>
+                    )}
                   </span>
                 </div>
                 <div

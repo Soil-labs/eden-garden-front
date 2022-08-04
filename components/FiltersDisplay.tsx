@@ -13,7 +13,7 @@ function FiltersDisplay() {
       <FilterDisplay name="teams" color="#9B67FF">
         <span>{`in `}</span>
       </FilterDisplay>
-      <FilterDisplayMember name="members" color="#78EECB" useAvatars={true}>
+      <FilterDisplayMember name="members" color="#78EECB">
         <span>{`with `}</span>
       </FilterDisplayMember>
     </div>

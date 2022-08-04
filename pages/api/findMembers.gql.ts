@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+
 export const FIND_MEMBERS = gql`
   query {
     findMembers(fields: {}) {

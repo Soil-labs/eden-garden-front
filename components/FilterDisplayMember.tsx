@@ -6,11 +6,10 @@ import Avatar from "./Avatar";
 interface Props {
   name: string;
   color: string;
-  useAvatars: boolean;
   children: ReactElement;
 }
 
-function FilterDisplayMember({ name, color, useAvatars, children }: Props) {
+function FilterDisplayMember({ name, color, children }: Props) {
   const { filters, setFilters } = useContext(FiltersContext);
   const [selectedMember, setSelectedMember] = useState<any | null>(null);
   const _name = name as keyof ContextType["filters"];
@@ -18,21 +17,21 @@ function FilterDisplayMember({ name, color, useAvatars, children }: Props) {
   const handleDeleteFilter = () => {
     if (!selectedMember) return;
 
-    const newFiltersArray = filters[_name].filter((item) => {
+    const newFiltersArray = filters.members.filter((item) => {
       return item._id !== selectedMember._id;
     });
     setFilters({
       ...filters,
-      [_name]: newFiltersArray,
+      members: newFiltersArray,
     });
     setSelectedMember(null);
   };
 
   return (
     <div className="inline">
-      {!!filters[_name].length && children}
+      {!!filters.members.length && children}
       <span>
-        {filters[_name].map((item, index) => (
+        {filters.members.map((item, index) => (
           <span
             key={index}
             className="font-bold last:mr-0 -mr-[8px] cursor-pointer"
@@ -42,13 +41,13 @@ function FilterDisplayMember({ name, color, useAvatars, children }: Props) {
             }}
           >
             <Avatar
-              src="https://placeimg.com/300/300/any"
+              src={item.discordAvatar || ""}
               border={selectedMember?._id === item._id ? color : "#fff"}
             />
           </span>
         ))}
       </span>
-      {!!filters[_name].length && (
+      {!!filters.members.length && (
         <div
           className="p-px rounded-full text-white inline-block ml-1 -mb-1 mr-2 cursor-pointer"
           style={{ backgroundColor: color }}

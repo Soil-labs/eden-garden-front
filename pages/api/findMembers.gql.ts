@@ -4,6 +4,7 @@ export const FIND_MEMBERS = gql`
     findMembers(fields: {}) {
       _id
       discordName
+      discordAvatar
       skills {
         level
         skillInfo {

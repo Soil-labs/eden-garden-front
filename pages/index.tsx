@@ -5,6 +5,7 @@ import {
   Dispatch,
   ReactElement,
   SetStateAction,
+  useEffect,
   useState,
 } from "react";
 import Layout from "../components/layout/Layout";
@@ -42,7 +43,7 @@ export const FiltersContext = createContext<ContextType>({
 });
 
 const Home: NextPageWithLayout = () => {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<any>({
     projects: [],
     teams: [],
     members: [],
@@ -50,10 +51,17 @@ const Home: NextPageWithLayout = () => {
   });
 
   const {
-    loading: isTodosLoading,
-    data: todosConnection,
-    error: todosError,
+    loading: membersLoading,
+    data: membersData,
+    error: membersError,
   } = useQuery<Unnamed_1_Query, Unnamed_1_QueryVariables>(FIND_MEMBERS, {}); // Use the type here for type safety
+
+  useEffect(() => {
+    if (!membersData || membersData?.findMembers?.length === 0) return;
+    if (membersData.findMembers) {
+      setFilters({ ...filters, members: membersData.findMembers });
+    }
+  }, [membersData]);
 
   return (
     <div className="">

@@ -77,7 +77,7 @@ function FilterSelector({
         />
       </div>
       {active && (
-        <fieldset className="absolute top-14 -right-2 p-1 bg-white rounded-md">
+        <fieldset className="absolute top-14 -right-2 p-1 bg-white rounded-md h-80 overflow-y-scroll">
           {options.map((option, optionIdx) => (
             <label
               htmlFor={`option-${option._id}`}

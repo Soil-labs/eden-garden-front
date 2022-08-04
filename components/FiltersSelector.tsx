@@ -2,7 +2,7 @@ import { Fragment, useCallback, useContext, useState } from "react";
 import { Members } from "../generated/graphql";
 import { FiltersContext } from "../pages";
 import { Project } from "../generated/graphql";
-import { Team } from "../types/Team";
+import { Team } from "../generated/graphql";
 import { Title } from "../types/Title";
 import FilterSelector from "./FilterSelector";
 

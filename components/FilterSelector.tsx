@@ -1,6 +1,6 @@
 import { Members } from "../generated/graphql";
 import { Project } from "../generated/graphql";
-import { Team } from "../types/Team";
+import { Team } from "../generated/graphql";
 import { Title } from "../types/Title";
 import {
   ChevronRightIcon,
@@ -99,6 +99,7 @@ function FilterSelector({
                 <div className="z-10 min-w-0 text-sm peer-checked:text-white">
                   <span className="font-medium cursor-pointer">
                     {"title" in option && <span>{option.title}</span>}
+                    {"name" in option && <span>{option.name}</span>}
                     {"discordName" in option && (
                       <span>
                         <span className="mr-1">

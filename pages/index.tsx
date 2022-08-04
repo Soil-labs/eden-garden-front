@@ -14,10 +14,17 @@ import FiltersSelector from "../components/FiltersSelector";
 import FiltersDisplay from "../components/FiltersDisplay";
 import {
   FindMembersDocument,
+  FindMembersInput,
   FindProjectsDocument,
+  FindTeamsDocument,
+  FindTeamsQuery,
+  FindTeamsQueryVariables,
   Project,
+  useFindMembersQuery,
+  useFindProjectsQuery,
+  useFindTeamsQuery,
 } from "../generated/graphql";
-import { Team } from "../types/Team";
+import { Team } from "../generated/graphql";
 import {
   Members,
   FindMembersQuery,
@@ -74,25 +81,41 @@ const Home: NextPageWithLayout = () => {
     loading: membersLoading,
     data: membersData,
     error: membersError,
-  } = useQuery<FindMembersQuery, FindMembersQueryVariables>(
-    FindMembersDocument,
-    {}
-  ); // Use the type here for type safety
+  } = useFindMembersQuery({
+    variables: {
+      fields: {},
+    },
+  });
   const {
     loading: projectsLoading,
     data: projectsData,
     error: projectsError,
-  } = useQuery<FindProjectsQuery, FindProjectsQueryVariables>(
-    FindProjectsDocument,
-    {}
-  ); // Use the type here for type safety
+  } = useFindProjectsQuery({
+    variables: {
+      fields: {},
+    },
+  });
+  const {
+    loading: teamsLoading,
+    data: teamsData,
+    error: teamsError,
+  } = useFindTeamsQuery({
+    variables: {
+      fields: {},
+    },
+  });
 
   useEffect(() => {
-    if (membersData?.findMembers || projectsData?.findProjects) {
+    if (
+      membersData?.findMembers ||
+      projectsData?.findProjects ||
+      teamsData?.findTeams
+    ) {
       setFiltersData({
         ...filtersData,
         members: membersData?.findMembers || [],
         projects: projectsData?.findProjects || [],
+        teams: teamsData?.findTeams || [],
       });
     }
   }, [membersData, projectsData]);

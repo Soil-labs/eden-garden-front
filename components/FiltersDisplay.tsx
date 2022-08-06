@@ -4,9 +4,11 @@ import FilterDisplay from "./FilterDisplay";
 import FilterDisplayMember from "./FilterDisplayMember";
 
 function FiltersDisplay() {
+  const { updates } = useContext(FiltersContext);
   return (
     <div className="">
-      <span className="font-bold text-[#74FA6D]">{8}</span> {`records `}
+      <span className="font-bold text-[#74FA6D]">{updates.length}</span>{" "}
+      {`records `}
       <FilterDisplay name="projects" color="#FF7E5C">
         <span>{`for `}</span>
       </FilterDisplay>

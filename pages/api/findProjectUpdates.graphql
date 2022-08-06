@@ -1,0 +1,28 @@
+input findProjectUpdatesINPUT {
+  _id: ID
+  projectID: [String]
+  memberID: [String]
+  teamID: [String]
+}
+
+query FindProjectsUpdate($fields: findProjectUpdatesINPUT) {
+  findProjectUpdates(fields: $fields) {
+    _id
+    title
+    content
+    registeredAt
+    members {
+      _id
+      discordName
+    }
+
+    projects {
+      _id
+      title
+    }
+    team {
+      _id
+      name
+    }
+  }
+}

@@ -13,27 +13,17 @@ import { AppProps } from "next/app";
 import FiltersSelector from "../components/FiltersSelector";
 import FiltersDisplay from "../components/FiltersDisplay";
 import {
-  FindMembersDocument,
-  FindMembersInput,
-  FindProjectsDocument,
-  FindTeamsDocument,
-  FindTeamsQuery,
-  FindTeamsQueryVariables,
   Project,
+  ProjectUpdate,
   useFindMembersQuery,
   useFindProjectsQuery,
+  useFindProjectsUpdateQuery,
   useFindTeamsQuery,
 } from "../generated/graphql";
 import { Team } from "../generated/graphql";
-import {
-  Members,
-  FindMembersQuery,
-  FindMembersQueryVariables,
-  FindProjectsQuery,
-  FindProjectsQueryVariables,
-} from "../generated/graphql";
-import { useQuery } from "@apollo/client";
+import { Members } from "../generated/graphql";
 import { Title } from "../types/Title";
+import Display from "../components/Display";
 
 export interface ContextType {
   filters: {
@@ -50,6 +40,7 @@ export interface ContextType {
     titles: Title[];
   } | null;
   setFiltersData: Dispatch<SetStateAction<any>> | null;
+  updates: ProjectUpdate[];
 }
 export const FiltersContext = createContext<ContextType>({
   filters: {
@@ -61,6 +52,7 @@ export const FiltersContext = createContext<ContextType>({
   setFilters: () => {},
   filtersData: null,
   setFiltersData: null,
+  updates: [],
 });
 
 const Home: NextPageWithLayout = () => {
@@ -71,6 +63,12 @@ const Home: NextPageWithLayout = () => {
     titles: [],
   });
   const [filtersData, setFiltersData] = useState<any>({
+    projects: [],
+    teams: [],
+    members: [],
+    titles: [],
+  });
+  const [updates, setUpdates] = useState<any>({
     projects: [],
     teams: [],
     members: [],
@@ -96,6 +94,25 @@ const Home: NextPageWithLayout = () => {
     },
   });
   const {
+    loading: projectUpdatesLoading,
+    data: projectUpdates,
+    error: projectUpdatesError,
+  } = useFindProjectsUpdateQuery({
+    variables: {
+      fields: {
+        projectID: !!filters.projects.length
+          ? filters.projects.map((item: Project) => item._id)
+          : null,
+        memberID: !!filters.members.length
+          ? filters.members.map((item: Members) => item._id)
+          : null,
+        teamID: !!filters.teams.length
+          ? filters.teams.map((item: Team) => item._id)
+          : null,
+      },
+    },
+  });
+  const {
     loading: teamsLoading,
     data: teamsData,
     error: teamsError,
@@ -118,18 +135,25 @@ const Home: NextPageWithLayout = () => {
         teams: teamsData?.findTeams || [],
       });
     }
-  }, [membersData, projectsData]);
+    if (projectUpdates?.findProjectUpdates) {
+      setUpdates(projectUpdates.findProjectUpdates);
+    }
+  }, [membersData, projectsData, teamsData, projectUpdates]);
 
   return (
-    <div className="">
-      <nav className="flex justify-between">
-        <FiltersContext.Provider
-          value={{ filters, setFilters, filtersData, setFiltersData }}
-        >
-          <FiltersDisplay />
-          <FiltersSelector />
-        </FiltersContext.Provider>
-      </nav>
+    <div className="relative">
+      <FiltersContext.Provider
+        value={{ filters, setFilters, filtersData, setFiltersData, updates }}
+      >
+        <nav className="fixed right-0 w-full">
+          <div className="w-full mx-auto px-6 max-w-screen-xl flex justify-between items-center">
+            <FiltersDisplay />
+            <FiltersSelector />
+          </div>
+        </nav>
+
+        <Display />
+      </FiltersContext.Provider>
     </div>
   );
 };

@@ -7,7 +7,7 @@ function Layout(props: { data: AppProps; children: ReactElement }) {
     <section className="bg-bgGrey min-h-screen">
       <div className="w-full max-w-screen-xl mx-auto">
         <Header />
-        <div className="relative mx-6">
+        <div className="relative mx-6 z-20">
           <main>{props.children}</main>
         </div>
       </div>

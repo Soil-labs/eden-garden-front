@@ -1,6 +1,7 @@
 import { useContext, useMemo, useState } from "react";
 import { ProjectUpdate } from "../generated/graphql";
 import { FiltersContext } from "../pages";
+import Avatar from "./Avatar";
 
 function Display() {
   const { updates } = useContext(FiltersContext);
@@ -30,7 +31,31 @@ function Display() {
             </p>
           )}
           <p className="text-lg font-bold text-slate-700">{update.title}</p>
-          <p>{update.content}</p>
+          <p className="text-black mb-3">{update.content}</p>
+          <div>
+            {!!update?.members?.length && (
+              <span>
+                {update?.members?.map((item, index) => (
+                  <span
+                    key={index}
+                    className="font-bold -mr-[8px] last:mr-0 cursor-pointer"
+                    style={{ color: "#78EECB" }}
+                  >
+                    <Avatar src={item?.discordAvatar || ""} border="#fff" />
+                  </span>
+                ))}
+              </span>
+            )}
+            <span className="ml-2 font-bold text-[#FF7E5C] first:ml-0">
+              {update.projects?.title}
+            </span>
+            {update?.team?.map((item, index) => (
+              <span className="ml-2 font-bold text-[#9B67FF]" key={index}>
+                {item?.name}
+              </span>
+            ))}
+          </div>
+          {/* <div>{JSON.stringify(update)}</div> */}
         </div>
       ))}
     </section>

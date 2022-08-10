@@ -14,6 +14,7 @@ query FindProjectsUpdate($fields: findProjectUpdatesINPUT) {
     members {
       _id
       discordName
+      discordAvatar
     }
 
     projects {

@@ -6,7 +6,7 @@ import FilterDisplayMember from "./FilterDisplayMember";
 function FiltersDisplay() {
   const { updates } = useContext(FiltersContext);
   return (
-    <div className="">
+    <div className="text-black">
       <span className="font-bold text-[#74FA6D]">{updates.length}</span>{" "}
       {`records `}
       <FilterDisplay name="projects" color="#FF7E5C">

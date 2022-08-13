@@ -70,7 +70,7 @@ function FilterSelector({
         onClick={() => setActiveTabCallback(index)}
         className="flex justify-center items-center w-full h-full pl-4 pr-2"
       >
-        <span className="mr-1">{title}</span>
+        <span className="mr-1 text-black">{title}</span>
         <ChevronRightIcon
           width={14}
           className={`${active ? "rotate-90" : ""}`}

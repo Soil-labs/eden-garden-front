@@ -3,6 +3,7 @@ input findProjectUpdatesINPUT {
   projectID: [String]
   memberID: [String]
   teamID: [String]
+  roleID: [String]
 }
 
 query FindProjectsUpdate($fields: findProjectUpdatesINPUT) {
@@ -10,16 +11,23 @@ query FindProjectsUpdate($fields: findProjectUpdatesINPUT) {
     _id
     title
     content
+    thread
     registeredAt
     members {
       _id
       discordName
       discordAvatar
     }
+    
 
     projects {
       _id
       title
+    }
+
+    role {
+      _id
+      name
     }
     team {
       _id

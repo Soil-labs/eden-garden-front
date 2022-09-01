@@ -204,6 +204,7 @@ export type ProjectUpdate = {
   _id?: Maybe<Scalars['ID']>;
   author?: Maybe<Members>;
   content?: Maybe<Scalars['String']>;
+  thread?: Maybe<Scalars['String']>;
   members?: Maybe<Array<Maybe<Members>>>;
   projects?: Maybe<Project>;
   registeredAt?: Maybe<Scalars['String']>;
@@ -1011,6 +1012,7 @@ export const FindProjectsUpdateDocument = gql`
     _id
     title
     content
+    thread
     registeredAt
     members {
       _id
@@ -1020,6 +1022,10 @@ export const FindProjectsUpdateDocument = gql`
     projects {
       _id
       title
+    }
+    role {
+      _id
+      name
     }
     team {
       _id

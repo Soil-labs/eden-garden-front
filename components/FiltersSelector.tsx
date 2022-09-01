@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useContext, useState } from "react";
-import { Members } from "../generated/graphql";
+import { Maybe, Members } from "../generated/graphql";
 import { FiltersContext } from "../pages";
 import { Project } from "../generated/graphql";
 import { Team } from "../generated/graphql";
@@ -10,23 +10,26 @@ type Data = {
   title: string;
   name: string;
   options: Project[] | Team[] | Members[] | Title[];
+  disabled: boolean;
 };
 
 function FiltersSelector() {
-  const { filtersData } = useContext(FiltersContext);
+  const { filtersData, filters } = useContext(FiltersContext);
   const _filtersData: Data[] = [
     {
       title: "📁 projects",
       name: "projects",
       options: filtersData?.projects || [],
+      disabled: false
     },
-    { title: "👥 teams", name: "teams", options: filtersData?.teams || [] },
+    { title: "👥 teams", name: "teams", options: filtersData?.teams || [], disabled: !filters.projects?.length },
     {
       title: "👤 members",
       name: "members",
       options: filtersData?.members || [],
+      disabled: !filters.teams?.length
     },
-    { title: "📌 titles", name: "titles", options: filtersData?.titles || [] },
+    { title: "📌 titles", name: "titles", options: filtersData?.titles || [], disabled: !filters.members?.length},
   ];
   const [activeTab, setActiveTab] = useState<Number | null>(null);
   const setActiveTabCallback = useCallback(
@@ -46,6 +49,7 @@ function FiltersSelector() {
             options={item.options}
             index={index}
             active={activeTab === index}
+            disabled={item.disabled}
             setActiveTabCallback={setActiveTabCallback}
           />
         ))}

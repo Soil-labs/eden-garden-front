@@ -19,6 +19,7 @@ interface Props {
   setActiveTabCallback: Function;
   index: Number;
   active: boolean;
+  disabled: boolean;
 }
 function FilterSelector({
   name,
@@ -27,6 +28,7 @@ function FilterSelector({
   setActiveTabCallback,
   index,
   active,
+  disabled
 }: Props) {
   const { filters, setFilters } = useContext(FiltersContext);
   const _name = name as keyof ContextType["filters"];
@@ -65,7 +67,7 @@ function FilterSelector({
     });
   };
   return (
-    <div className="h-12 border-r last:border-none bg-white hover:bg-slate-200 first:rounded-l-full last:rounded-r-full drop-shadow-md cursor-pointer">
+    <div className= {disabled ? "h-12 border-r last:border-none bg-slate-200 first:rounded-l-full last:rounded-r-full drop-shadow-md cursor-pointer" : "h-12 border-r last:border-none bg-white hover:bg-slate-200 first:rounded-l-full last:rounded-r-full drop-shadow-md cursor-pointer"} >
       <div
         onClick={() => setActiveTabCallback(index)}
         className="flex justify-center items-center w-full h-full pl-4 pr-2"
@@ -76,7 +78,7 @@ function FilterSelector({
           className={`${active ? "rotate-90" : ""}`}
         />
       </div>
-      {active && (
+      {(active && !disabled) && (
         <fieldset className="absolute top-14 -right-2 p-1 bg-white rounded-md max-h-80 overflow-y-scroll">
           {options.map((option, optionIdx) => (
             <label

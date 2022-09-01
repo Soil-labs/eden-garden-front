@@ -1,0 +1,10 @@
+input findRoomsInput {
+  _id: ID
+}
+
+query FindTeams($fields: findRoomsInput) {
+  findRooms(fields: $fields) {
+    _id
+    name
+  }
+}

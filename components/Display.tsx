@@ -55,6 +55,12 @@ function Display() {
                 {item?.name}
               </span>
             ))}
+            {update?.role?.map((item, index) => (
+              <span className="ml-2 font-bold text-[#bece46]" key={index}>
+                {item?.name}
+              </span>
+            ))}
+            
           </div>
           {/* <div>{JSON.stringify(update)}</div> */}
         </div>

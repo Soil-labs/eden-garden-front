@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
+import { Role } from '../types/Role';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -210,6 +211,7 @@ export type ProjectUpdate = {
   registeredAt?: Maybe<Scalars['String']>;
   serverID?: Maybe<Array<Maybe<Scalars['String']>>>;
   team?: Maybe<Array<Maybe<Team>>>;
+  role?: Maybe<Array<Maybe<Role>>>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -607,6 +609,7 @@ export type FindProjectUpdatesInput = {
   projectID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   serverID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   teamID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  roleID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type FindProjectsInput = {

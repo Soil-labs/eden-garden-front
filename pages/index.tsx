@@ -123,20 +123,33 @@ const Home: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
+    if (projectUpdates?.findProjectUpdates) {
+      setUpdates(projectUpdates.findProjectUpdates);
+    }
+    console.log(projectUpdates)
+    let updatedProjects: (string | null | undefined)[] = [];
+    let updatedTeams = [];
+    projectUpdates?.findProjectUpdates?.map((update) => {
+      updatedProjects.push(update?.projects?._id)
+      update?.team?.map((team) => {
+        updatedTeams.push(team?._id)
+      })
+    })
     if (
       membersData?.findMembers ||
       projectsData?.findProjects ||
       teamsData?.findTeams
     ) {
+      projectsData?.findProjects?.filter((project) => {
+        return updatedProjects.includes(project?._id) ? project : ""
+      })
       setFiltersData({
         ...filtersData,
         members: membersData?.findMembers || [],
         projects: projectsData?.findProjects || [],
         teams: teamsData?.findTeams || [],
       });
-    }
-    if (projectUpdates?.findProjectUpdates) {
-      setUpdates(projectUpdates.findProjectUpdates);
+      
     }
   }, [membersData, projectsData, teamsData, projectUpdates]);
 

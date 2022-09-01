@@ -126,13 +126,17 @@ const Home: NextPageWithLayout = () => {
     if (projectUpdates?.findProjectUpdates) {
       setUpdates(projectUpdates.findProjectUpdates);
     }
-    console.log(projectUpdates)
-    let updatedProjects: (string | null | undefined)[] = [];
-    let updatedTeams = [];
+    
+    let updatedProjectsID: (string | null | undefined)[] = [];
+    let updatedTeamsID: (string | null | undefined)[] = [];
+    let updatedMembersID: (string | null | undefined)[] = [];
     projectUpdates?.findProjectUpdates?.map((update) => {
-      updatedProjects.push(update?.projects?._id)
+      updatedProjectsID.push(update?.projects?._id)
       update?.team?.map((team) => {
-        updatedTeams.push(team?._id)
+        updatedTeamsID.push(team?._id)
+      })
+      update?.members?.map((member) => {
+        updatedMembersID.push(member?._id)
       })
     })
     if (
@@ -140,14 +144,28 @@ const Home: NextPageWithLayout = () => {
       projectsData?.findProjects ||
       teamsData?.findTeams
     ) {
-      projectsData?.findProjects?.filter((project) => {
-        return updatedProjects.includes(project?._id) ? project : ""
+      const updatedProjects = projectsData?.findProjects?.filter((project) => {
+        if(updatedProjectsID.includes(project?._id)){
+          return project
+        }
+      })
+
+      const updatedTeams = teamsData?.findTeams?.filter((team) => {
+        if(updatedTeamsID.includes(team?._id)){
+          return team
+        }
+      })
+
+      const updatedMembers = membersData?.findMembers?.filter((member) => {
+        if(updatedMembersID.includes(member?._id)){
+          return member
+        }
       })
       setFiltersData({
         ...filtersData,
-        members: membersData?.findMembers || [],
-        projects: projectsData?.findProjects || [],
-        teams: teamsData?.findTeams || [],
+        members: updatedMembers || [],
+        projects: updatedProjects || [],
+        teams: updatedTeams || [],
       });
       
     }

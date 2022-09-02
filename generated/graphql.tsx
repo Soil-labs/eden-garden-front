@@ -326,6 +326,9 @@ export type QueryFindTeamsArgs = {
   fields?: InputMaybe<FindTeamsInput>;
 };
 
+export type QueryFindRolesArgs = {
+  fields?: InputMaybe<FindRolesInput>;
+};
 
 export type QueryMatchMembersToSkillsArgs = {
   fields?: InputMaybe<MatchMembersToSkillInput>;
@@ -658,6 +661,13 @@ export type FindSkillsInput = {
 export type FindTeamsInput = {
   _id?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   projectID?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  roleID?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  serverID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type FindRolesInput = {
+  _id?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  projectID?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   serverID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -949,7 +959,7 @@ export type FindProjectsUpdateQueryVariables = Exact<{
 }>;
 
 
-export type FindProjectsUpdateQuery = { __typename?: 'Query', findProjectUpdates?: Array<{ __typename?: 'ProjectUpdate', _id?: string | null, title?: string | null, content?: string | null, registeredAt?: string | null, members?: Array<{ __typename?: 'Members', _id?: string | null, discordName?: string | null, discordAvatar?: string | null } | null> | null, projects?: { __typename?: 'Project', _id?: string | null, title?: string | null } | null, team?: Array<{ __typename?: 'Team', _id?: string | null, name?: string | null } | null> | null } | null> | null };
+export type FindProjectsUpdateQuery = { __typename?: 'Query', findProjectUpdates?: Array<{ __typename?: 'ProjectUpdate', _id?: string | null, title?: string | null, content?: string | null, registeredAt?: string | null, members?: Array<{ __typename?: 'Members', _id?: string | null, discordName?: string | null, discordAvatar?: string | null } | null> | null, projects?: { __typename?: 'Project', _id?: string | null, title?: string | null } | null, role?: Array<{__typename?: 'Role', _id?: string | null, name?: string | null}>, team?: Array<{ __typename?: 'Team', _id?: string | null, name?: string | null } | null> | null } | null> | null };
 
 export type FindProjectsQueryVariables = Exact<{
   fields?: InputMaybe<FindProjectsInput>;
@@ -981,6 +991,15 @@ export const FindMembersDocument = gql`
   }
 }
     `;
+
+
+export type FindRolesQueryVariables = Exact<{
+  fields?: InputMaybe<FindRolesInput>;
+}>;
+
+
+export type FindRolesQuery = { __typename?: 'Query', findRoles?: Array<{ __typename?: 'Role', _id?: string | null, name?: string | null } | null> | null };
+
 
 /**
  * __useFindMembersQuery__
@@ -1111,6 +1130,8 @@ export const FindTeamsDocument = gql`
 }
     `;
 
+
+
 /**
  * __useFindTeamsQuery__
  *
@@ -1138,3 +1159,47 @@ export function useFindTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type FindTeamsQueryHookResult = ReturnType<typeof useFindTeamsQuery>;
 export type FindTeamsLazyQueryHookResult = ReturnType<typeof useFindTeamsLazyQuery>;
 export type FindTeamsQueryResult = Apollo.QueryResult<FindTeamsQuery, FindTeamsQueryVariables>;
+
+
+
+
+
+
+export const FindRolesDocument = gql`
+    query FindRoles($fields: findRolesInput) {
+  findRoles(fields: $fields) {
+    _id
+    name
+  }
+}
+    `;
+
+
+
+/**
+ * __useFindRolesQuery__
+ *
+ * To run a query within a React component, call `useFindRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindRolesQuery({
+ *   variables: {
+ *      fields: // value for 'fields'
+ *   },
+ * });
+ */
+export function useFindRolesQuery(baseOptions?: Apollo.QueryHookOptions<FindRolesQuery, FindRolesQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return Apollo.useQuery<FindRolesQuery, FindRolesQueryVariables>(FindRolesDocument, options);
+}
+export function useFindRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindRolesQuery, FindRolesQueryVariables>) {
+    const options = {...defaultOptions, ...baseOptions}
+    return Apollo.useLazyQuery<FindRolesQuery, FindRolesQueryVariables>(FindRolesDocument, options);
+  }
+export type FindRolesQueryHookResult = ReturnType<typeof useFindRolesQuery>;
+export type FindRolesLazyQueryHookResult = ReturnType<typeof useFindRolesLazyQuery>;
+export type FindRolesQueryResult = Apollo.QueryResult<FindRolesQuery, FindRolesQueryVariables>;

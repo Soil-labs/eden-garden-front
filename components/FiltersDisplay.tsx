@@ -15,6 +15,9 @@ function FiltersDisplay() {
       <FilterDisplay name="teams" color="#9B67FF">
         <span>{`in `}</span>
       </FilterDisplay>
+      <FilterDisplay name="roles" color="#bece46">
+        <span>{``}</span>
+      </FilterDisplay>
       <FilterDisplayMember name="members" color="#78EECB">
         <span>{`with `}</span>
       </FilterDisplayMember>

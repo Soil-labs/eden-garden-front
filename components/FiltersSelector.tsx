@@ -5,11 +5,12 @@ import { Project } from "../generated/graphql";
 import { Team } from "../generated/graphql";
 import { Title } from "../types/Title";
 import FilterSelector from "./FilterSelector";
+import { Role } from "../types/Role";
 
 type Data = {
   title: string;
   name: string;
-  options: Project[] | Team[] | Members[] | Title[];
+  options: Project[] | Team[] | Members[] | Title[] | Role[];
   disabled: boolean;
 };
 
@@ -23,11 +24,12 @@ function FiltersSelector() {
       disabled: false
     },
     { title: "👥 teams", name: "teams", options: filtersData?.teams || [], disabled: !filters.projects?.length },
+    { title: "👥 Roles", name: "roles", options: filtersData?.roles || [], disabled: !filters.teams?.length },
     {
       title: "👤 members",
       name: "members",
       options: filtersData?.members || [],
-      disabled: !filters.teams?.length
+      disabled: !filters.roles?.length
     },
     { title: "📌 titles", name: "titles", options: filtersData?.titles || [], disabled: !filters.members?.length},
   ];

@@ -11,11 +11,12 @@ import { useContext, useState } from "react";
 import { FiltersContext, ContextType } from "../pages";
 import { handleClientScriptLoad } from "next/script";
 import Avatar from "./Avatar";
+import { Role } from "../types/Role";
 
 interface Props {
   name: string;
   title?: string;
-  options: Project[] | Team[] | Members[] | Title[];
+  options: Project[] | Team[] | Role[] | Members[] | Title[];
   setActiveTabCallback: Function;
   index: Number;
   active: boolean;
@@ -32,7 +33,6 @@ function FilterSelector({
 }: Props) {
   const { filters, setFilters } = useContext(FiltersContext);
   const _name = name as keyof ContextType["filters"];
-
   const hasProjectSelected = (id: string): boolean => {
     return filters[name as keyof ContextType["filters"]].some(
       (filter) => filter._id === id
@@ -43,19 +43,19 @@ function FilterSelector({
     let newFiltersArray;
 
     if (hasProjectSelected(e.target.value)) {
-      const arrayToFilter: Array<Project | Team | Members | Title> =
+      const arrayToFilter: Array<Project | Team | Role | Members | Title> =
         filters[_name];
       newFiltersArray = arrayToFilter.filter(
-        (item: Project | Team | Members | Title) => {
+        (item: Project | Team | Role | Members | Title) => {
           return item._id !== e.target.value;
         }
       );
     } else {
-      const arrayToFilter: Array<Project | Team | Members | Title> = options;
+      const arrayToFilter: Array<Project | Team | Role | Members | Title> = options;
       newFiltersArray = [
         ...filters[_name],
         arrayToFilter.find(
-          (option: Project | Team | Members | Title) =>
+          (option: Project | Team | Role | Members | Title) =>
             option._id === e.target.value
         ),
       ];

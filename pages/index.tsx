@@ -19,16 +19,19 @@ import {
   useFindProjectsQuery,
   useFindProjectsUpdateQuery,
   useFindTeamsQuery,
+  useFindRolesQuery,
 } from "../generated/graphql";
 import { Team } from "../generated/graphql";
 import { Members } from "../generated/graphql";
 import { Title } from "../types/Title";
 import Display from "../components/Display";
+import { Role } from "../types/Role";
 
 export interface ContextType {
   filters: {
     projects: Project[];
     teams: Team[];
+    roles: Role[];
     members: Members[];
     titles: Title[];
   };
@@ -36,6 +39,7 @@ export interface ContextType {
   filtersData: {
     projects: Project[];
     teams: Team[];
+    roles: Role[];
     members: Members[];
     titles: Title[];
   } | null;
@@ -46,6 +50,7 @@ export const FiltersContext = createContext<ContextType>({
   filters: {
     projects: [],
     teams: [],
+    roles: [],
     members: [],
     titles: [],
   },
@@ -59,18 +64,21 @@ const Home: NextPageWithLayout = () => {
   const [filters, setFilters] = useState<any>({
     projects: [],
     teams: [],
+    roles: [],
     members: [],
     titles: [],
   });
   const [filtersData, setFiltersData] = useState<any>({
     projects: [],
     teams: [],
+    roles: [],
     members: [],
     titles: [],
   });
   const [updates, setUpdates] = useState<any>({
     projects: [],
     teams: [],
+    roles: [],
     members: [],
     titles: [],
   });
@@ -109,6 +117,9 @@ const Home: NextPageWithLayout = () => {
         teamID: !!filters.teams.length
           ? filters.teams.map((item: Team) => item._id)
           : null,
+        roleID: !!filters.roles.length
+          ? filters.roles.map((item: Role) => item._id)
+          : null,
       },
     },
   });
@@ -118,7 +129,18 @@ const Home: NextPageWithLayout = () => {
     error: teamsError,
   } = useFindTeamsQuery({
     variables: {
-      fields: {},
+      fields: {
+      },
+    },
+  });
+  const {
+    loading: rolesLoading,
+    data: rolesData,
+    error: rolesError,
+  } = useFindRolesQuery({
+    variables: {
+      fields: {
+      },
     },
   });
 
@@ -128,6 +150,7 @@ const Home: NextPageWithLayout = () => {
     }
     
     let updatedProjectsID: (string | null | undefined)[] = [];
+    let updatedRolesID: (string | null | undefined)[] = [];
     let updatedTeamsID: (string | null | undefined)[] = [];
     let updatedMembersID: (string | null | undefined)[] = [];
     projectUpdates?.findProjectUpdates?.map((update) => {
@@ -138,15 +161,24 @@ const Home: NextPageWithLayout = () => {
       update?.members?.map((member) => {
         updatedMembersID.push(member?._id)
       })
+      update?.role?.map((role) => {
+        updatedRolesID.push(role?._id)
+      })
     })
     if (
       membersData?.findMembers ||
       projectsData?.findProjects ||
-      teamsData?.findTeams
+      teamsData?.findTeams ||
+      rolesData?.findRoles
     ) {
       const updatedProjects = projectsData?.findProjects?.filter((project) => {
         if(updatedProjectsID.includes(project?._id)){
           return project
+        }
+      })
+      const updatedRoles = rolesData?.findRoles?.filter((role) => {
+        if(updatedRolesID.includes(role?._id)){
+          return role
         }
       })
 
@@ -166,10 +198,10 @@ const Home: NextPageWithLayout = () => {
         members: updatedMembers || [],
         projects: updatedProjects || [],
         teams: updatedTeams || [],
+        roles: updatedRoles || []
       });
-      
     }
-  }, [membersData, projectsData, teamsData, projectUpdates]);
+  }, [membersData, projectsData, teamsData, projectUpdates, rolesData]);
 
   return (
     <div className="relative">

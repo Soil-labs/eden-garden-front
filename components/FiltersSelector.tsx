@@ -31,7 +31,7 @@ function FiltersSelector() {
       options: filtersData?.members || [],
       disabled: !filters.roles?.length
     },
-    { title: "📌 titles", name: "titles", options: filtersData?.titles || [], disabled: !filters.members?.length},
+    { title: "📌 date", name: "dates", options: filtersData?.titles || [], disabled: false},
   ];
   const [activeTab, setActiveTab] = useState<Number | null>(null);
   const setActiveTabCallback = useCallback(

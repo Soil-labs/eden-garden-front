@@ -12,6 +12,10 @@ import { FiltersContext, ContextType } from "../pages";
 import { handleClientScriptLoad } from "next/script";
 import Avatar from "./Avatar";
 import { Role } from "../types/Role";
+import { addDays } from "date-fns";
+import { DateRange } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 interface Props {
   name: string;
@@ -31,7 +35,7 @@ function FilterSelector({
   active,
   disabled
 }: Props) {
-  const { filters, setFilters } = useContext(FiltersContext);
+  const { filters, setFilters, filterDate, setFilterDate } = useContext(FiltersContext);
   const _name = name as keyof ContextType["filters"];
   const hasProjectSelected = (id: string): boolean => {
     return filters[name as keyof ContextType["filters"]].some(
@@ -78,7 +82,7 @@ function FilterSelector({
           className={`${active ? "rotate-90" : ""}`}
         />
       </div>
-      {(active && !disabled) && (
+      {(active && !disabled && name !== "dates") && (
         <fieldset className="absolute top-14 -right-2 p-1 bg-white rounded-md max-h-80 overflow-y-scroll">
           {options.map((option, optionIdx) => (
             <label
@@ -121,6 +125,19 @@ function FilterSelector({
             </label>
           ))}
         </fieldset>
+      )}
+      {active && name === "dates" && (
+        <DateRange
+          onChange={(item: { selection: { startDate: any; endDate: any;}; }) =>  setFilterDate({
+            dateStart: item.selection.startDate,
+            dateEnd: addDays(item.selection.endDate, 1)
+          })}
+          months={1}
+          minDate={addDays(new Date(), -360)}
+          maxDate={new Date()}
+          direction="vertical"
+          ranges={[{startDate: filterDate.dateStart, endDate: filterDate.dateEnd, key: "selection"}]}
+      />
       )}
     </div>
   );

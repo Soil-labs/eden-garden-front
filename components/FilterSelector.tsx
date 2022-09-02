@@ -13,7 +13,7 @@ import { handleClientScriptLoad } from "next/script";
 import Avatar from "./Avatar";
 import { Role } from "../types/Role";
 import { addDays } from "date-fns";
-import { DateRange } from "react-date-range";
+import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
@@ -128,10 +128,13 @@ function FilterSelector({
       )}
       {active && name === "dates" && (
         <DateRange
-          onChange={(item: { selection: { startDate: any; endDate: any;}; }) =>  setFilterDate({
-            dateStart: item.selection.startDate,
-            dateEnd: addDays(item.selection.endDate, 1)
-          })}
+          onChange={(item: RangeKeyDict) =>  {
+            console.log(item.selection.endDate)
+            setFilterDate({
+              dateStart: item.selection.startDate,
+              dateEnd: item.selection.endDate
+            })
+          }}
           months={1}
           minDate={addDays(new Date(), -360)}
           maxDate={new Date()}

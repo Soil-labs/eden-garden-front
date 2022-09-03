@@ -17,7 +17,6 @@ function Display() {
       );
     }
   }, [updates]);
-
   return (
     <section className="pt-20">
       {sortedUpdates.map((update: ProjectUpdate, index: Number) => (
@@ -32,7 +31,7 @@ function Display() {
           )}
           <p className="text-lg font-bold text-slate-700">{update.title}</p>
           <p className="text-black mb-3">{update.content}</p>
-          {update.threadDiscordlID && <p className="text-black mb-3"><a className="border border-slate-300 rounded-xl px-1 py-0.5 hover:bg-slate-300 " href={update.threadDiscordlID? update.thread: ""}>Discord Thread</a></p>}
+          {update.threadDiscordlID && <p className="text-black mb-3"><a className="border border-slate-300 rounded-xl px-1 py-0.5 hover:bg-slate-300 " href={update.threadDiscordlID? update.threadDiscordlID: ""}>Discord Thread</a></p>}
           <div>
             {!!update?.members?.length && (
               <span>

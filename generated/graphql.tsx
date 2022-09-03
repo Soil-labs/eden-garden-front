@@ -205,7 +205,7 @@ export type ProjectUpdate = {
   _id?: Maybe<Scalars['ID']>;
   author?: Maybe<Members>;
   content?: Maybe<Scalars['String']>;
-  thread?: Maybe<Scalars['String']>;
+  threadDiscordlID?: Maybe<Scalars['String']>;
   members?: Maybe<Array<Maybe<Members>>>;
   projects?: Maybe<Project>;
   registeredAt?: Maybe<Scalars['String']>;
@@ -608,6 +608,8 @@ export type FindProjectInput = {
 
 export type FindProjectUpdatesInput = {
   _id?: InputMaybe<Scalars['ID']>;
+  dateStart?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  dateEnd?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   memberID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   projectID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   serverID?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -959,7 +961,7 @@ export type FindProjectsUpdateQueryVariables = Exact<{
 }>;
 
 
-export type FindProjectsUpdateQuery = { __typename?: 'Query', findProjectUpdates?: Array<{ __typename?: 'ProjectUpdate', _id?: string | null, title?: string | null, content?: string | null, registeredAt?: string | null, members?: Array<{ __typename?: 'Members', _id?: string | null, discordName?: string | null, discordAvatar?: string | null } | null> | null, projects?: { __typename?: 'Project', _id?: string | null, title?: string | null } | null, role?: Array<{__typename?: 'Role', _id?: string | null, name?: string | null}>, team?: Array<{ __typename?: 'Team', _id?: string | null, name?: string | null } | null> | null } | null> | null };
+export type FindProjectsUpdateQuery = { __typename?: 'Query', findProjectUpdates?: Array<{ __typename?: 'ProjectUpdate', _id?: string | null, title?: string | null, content?: string | null, registeredAt?: string | null, dateStart?: string | null, dateEnd?: string | null, members?: Array<{ __typename?: 'Members', _id?: string | null, discordName?: string | null, discordAvatar?: string | null } | null> | null, projects?: { __typename?: 'Project', _id?: string | null, title?: string | null } | null, role?: Array<{__typename?: 'Role', _id?: string | null, name?: string | null}>, team?: Array<{ __typename?: 'Team', _id?: string | null, name?: string | null } | null> | null } | null> | null };
 
 export type FindProjectsQueryVariables = Exact<{
   fields?: InputMaybe<FindProjectsInput>;
@@ -1034,7 +1036,7 @@ export const FindProjectsUpdateDocument = gql`
     _id
     title
     content
-    thread
+    threadDiscordlID
     registeredAt
     members {
       _id

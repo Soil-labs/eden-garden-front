@@ -26,6 +26,8 @@ import { Members } from "../generated/graphql";
 import { Title } from "../types/Title";
 import Display from "../components/Display";
 import { Role } from "../types/Role";
+import { addDays } from "date-fns";
+
 
 export interface ContextType {
   filters: {
@@ -43,6 +45,14 @@ export interface ContextType {
     members: Members[];
     titles: Title[];
   } | null;
+
+  filterDate: {
+    dateStart: Date;
+    dateEnd: Date;
+  };
+
+  setFilterDate: Dispatch<SetStateAction<any>>;
+
   setFiltersData: Dispatch<SetStateAction<any>> | null;
   updates: ProjectUpdate[];
 }
@@ -54,6 +64,11 @@ export const FiltersContext = createContext<ContextType>({
     members: [],
     titles: [],
   },
+  filterDate: {
+    dateStart: addDays(new Date(), -5),
+    dateEnd: addDays(new Date(), 0)
+  },
+  setFilterDate: () => {},
   setFilters: () => {},
   filtersData: null,
   setFiltersData: null,
@@ -74,6 +89,10 @@ const Home: NextPageWithLayout = () => {
     roles: [],
     members: [],
     titles: [],
+  });
+  const [filterDate, setFilterDate] = useState<any>({
+    dateStart: addDays(new Date(), -5),
+    dateEnd: addDays(new Date(), 0)
   });
   const [updates, setUpdates] = useState<any>({
     projects: [],
@@ -108,6 +127,8 @@ const Home: NextPageWithLayout = () => {
   } = useFindProjectsUpdateQuery({
     variables: {
       fields: {
+        dateStart: !!filterDate.dateStart ? filterDate.dateStart : null ,
+        dateEnd: !!filterDate.dateEnd ? filterDate.dateEnd : null ,
         projectID: !!filters.projects.length
           ? filters.projects.map((item: Project) => item._id)
           : null,
@@ -201,12 +222,12 @@ const Home: NextPageWithLayout = () => {
         roles: updatedRoles || []
       });
     }
-  }, [membersData, projectsData, teamsData, projectUpdates, rolesData]);
+  }, [membersData, projectsData, teamsData, projectUpdates, rolesData, filterDate]);
 
   return (
     <div className="relative">
       <FiltersContext.Provider
-        value={{ filters, setFilters, filtersData, setFiltersData, updates }}
+        value={{ filters, setFilters, filtersData, setFiltersData, updates, filterDate, setFilterDate }}
       >
         <nav className="fixed right-0 w-full">
           <div className="w-full mx-auto px-6 max-w-screen-xl flex justify-between items-center">

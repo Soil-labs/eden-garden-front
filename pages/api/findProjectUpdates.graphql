@@ -18,7 +18,11 @@ query FindProjectsUpdate($fields: findProjectUpdatesINPUT) {
       discordName
       discordAvatar
     }
-    
+    author {
+      _id
+      discordName
+      discordAvatar
+    }
 
     projects {
       _id

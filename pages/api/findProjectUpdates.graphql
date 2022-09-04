@@ -11,7 +11,7 @@ query FindProjectsUpdate($fields: findProjectUpdatesINPUT) {
     _id
     title
     content
-    threadDiscordlID
+    threadDiscordID
     registeredAt
     members {
       _id

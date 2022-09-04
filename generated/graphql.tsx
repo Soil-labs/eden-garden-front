@@ -205,7 +205,7 @@ export type ProjectUpdate = {
   _id?: Maybe<Scalars['ID']>;
   author?: Maybe<Members>;
   content?: Maybe<Scalars['String']>;
-  threadDiscordlID?: Maybe<Scalars['String']>;
+  threadDiscordID?: Maybe<Scalars['String']>;
   members?: Maybe<Array<Maybe<Members>>>;
   projects?: Maybe<Project>;
   registeredAt?: Maybe<Scalars['String']>;
@@ -1036,7 +1036,7 @@ export const FindProjectsUpdateDocument = gql`
     _id
     title
     content
-    threadDiscordlID
+    threadDiscordID
     registeredAt
     members {
       _id

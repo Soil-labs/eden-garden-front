@@ -25,7 +25,6 @@ function Display() {
         >
         <div className="flex flex-row">
           <span
-            key={index}
             className="font-bold -mr-[8px] last:mr-0 cursor-pointer pr-4"
             style={{ color: "#78EECB" }}
           >

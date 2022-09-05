@@ -129,6 +129,7 @@ const Home: NextPageWithLayout = () => {
       fields: {
         dateStart: !!filterDate.dateStart ? filterDate.dateStart : null ,
         dateEnd: !!filterDate.dateEnd ? filterDate.dateEnd : null ,
+
         projectID: !!filters.projects.length
           ? filters.projects.map((item: Project) => item._id)
           : null,
@@ -166,6 +167,14 @@ const Home: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
+    const items = JSON.parse(localStorage.getItem('filters') || "{}");
+    if (items.projects.length > 0) {
+      setFilters(items);
+    }
+	}, []);
+
+  useEffect(() => {
+    localStorage.setItem('filters', JSON.stringify(filters));
     if (projectUpdates?.findProjectUpdates) {
       setUpdates(projectUpdates.findProjectUpdates);
     }
@@ -223,6 +232,7 @@ const Home: NextPageWithLayout = () => {
       });
     }
   }, [membersData, projectsData, teamsData, projectUpdates, rolesData, filterDate]);
+
 
   return (
     <div className="relative">

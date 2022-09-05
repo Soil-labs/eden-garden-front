@@ -168,7 +168,7 @@ const Home: NextPageWithLayout = () => {
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem('filters') || "{}");
-    if (items.projects.length > 0) {
+    if (items?.projects?.length > 0) {
       setFilters(items);
     }
 	}, []);

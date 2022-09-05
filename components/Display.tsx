@@ -6,7 +6,6 @@ import Avatar from "./Avatar";
 function Display() {
   const { updates } = useContext(FiltersContext);
   const [sortedUpdates, setSortedUpdates] = useState<ProjectUpdate[]>([]);
-  
   useMemo(() => {
     const arrayToSort: ProjectUpdate[] = [].slice.call(updates);
     if (updates) {
@@ -24,11 +23,20 @@ function Display() {
           key={`${index}`}
           className="bg-white mb-3 border border-slate-300 rounded-xl px-2 py-3"
         >
+        <div className="flex flex-row">
+          <span
+            key={index}
+            className="font-bold -mr-[8px] last:mr-0 cursor-pointer pr-4"
+            style={{ color: "#78EECB" }}
+          >
+            <Avatar src={update?.author?.discordAvatar || ""} border="#fff" />
+          </span>
           {update.registeredAt && (
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-400 pt-1">
               {new Date(Number(update.registeredAt)).toLocaleDateString()}
             </p>
           )}
+        </div>
           <p className="text-lg font-bold text-slate-700">{update.title}</p>
           <p className="text-black mb-3">{update.content}</p>
           {update.threadDiscordID && <p className="text-black mb-3"><a className="border border-slate-300 rounded-xl px-1 py-0.5 hover:bg-slate-300 " href={update.threadDiscordID? update.threadDiscordID: ""}>Discord Thread</a></p>}
